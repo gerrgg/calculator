@@ -17,6 +17,7 @@ h1{
 }
 #output{
   padding: 1rem;
+  height: 50px;
 }
 #calculator{
   background-color: #fff;

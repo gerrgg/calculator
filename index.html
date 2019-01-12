@@ -11,10 +11,16 @@
       <h1>Calculator - Gregbast1994</h1>
       <div id="calculator">
         <div id="display">
-          <div id="storage">2+2=</div>
-          <div id="output">4</div>
+          <div id="storage"></div>
+          <div id="output"></div>
         </div>
         <div id="body">
+          <div class="row">
+              <div class="button num">(</div>
+              <div class="button num">)</div>
+              <div class="button num">backspace</div>
+              <div class="button operator">clear</div>
+            </div>
           <div class="row">
             <div class="button num">7</div>
             <div class="button num">8</div>
@@ -25,7 +31,7 @@
             <div class="button num">4</div>
             <div class="button num">5</div>
             <div class="button num">6</div>
-            <div class="button operator">x</div>
+            <div class="button operator">*</div>
           </div>
           <div class="row">
             <div class="button num">1</div>
@@ -36,7 +42,7 @@
           <div class="row">
             <div class="button num">0</div>
             <div class="button num">.</div>
-            <div class="button num">=</div>
+            <div id="equal" class="button num">=</div>
             <div class="button operator">+</div>
           </div>
 
@@ -44,5 +50,9 @@
       </div>
     </div>
   </body>
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
   <script src="calculator.js"></script>
 </html>
