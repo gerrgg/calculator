@@ -1,70 +1,70 @@
-$(document).ready(function(){
-    $('.button').click(function(){
-        let clicked = $(this).text();
-        let output = $('#output');
-        switch(clicked){
-            case '=':
-                calculate( output.text() );
-                break;
-            case 'backspace':
-                backspace( output.text() );
-                break;
-            case 'clear':
-                clearOutput();
-                break;
-            default:
-            output.append(clicked);
-        }
-    });
+$(function(){
+    var calculator = {
+        $calc: $('#calculator'),
+        $output: $('#output'),
 
-    function calculate( str ){
-        let output = $('#output');
-        if( ! str.length ){
-            alert('Error: No input');
-        }else{
-            regex = /(\d*)+(\+|-|\*|)+(\d*)/g;
-            let matches = regex.exec(str);
-            // matches[0] = problem
-            // matches[1] = first num
-            // matches[2] = operator
-            // matches[3] = 2nd num
-            $('#storage').text(matches[0] + '=');
-            switch( matches[2] ){
-                case '+':
-                    output.text(add(matches[1], matches[3]));
-                    break;
-                case '-':
-                    output.text(subtract(matches[1], matches[3]));
-                    break;
-                case '*':
-                    output.text(multiply(matches[1], matches[3]));
-                    break;
-                case '÷':
-                    output.text(divide(matches[1], matches[3]));
-                    break;
-                default:
-                    alert('error');
+        init: function(){
+            this.$calc.on( 'click', '.button', this.button_clicked )
+        },
+
+        button_clicked: function( e ){
+            /**
+             * Finds the value of the button clicked, checks it against an array of special case buttons
+             * and passed to the appropriate function.
+             */
+            let input = e.target.innerText;
+            let ban_list = ['backspace', 'clear', '='];
+
+            if( ! ban_list.includes( input ) ){
+                calculator.display( input, true );
+            } else {
+                calculator[input]();
             }
-            
-        }
-    }
-    function clearOutput(){
-        $('#output').text('');
-    }
-    function backspace(str){
-        $('#output').text( str.slice(0, -1) );
-    }
+        },
 
-    function add(x, y){
-        return x + y;
+        display: function( input, append = false ){
+            /**
+             * Simply used to change the on screen display
+             */
+            if( append ){
+                this.$output.append( input );
+            } else {
+                this.$output.html( input );
+            }
+        },
+        
+        ['backspace']: function(){
+            /**
+             * Takes the original string, removes a letter and overwrites the current on-screen value
+             */
+            let old_input = this.$output.text();
+            let new_input = old_input.substring(0, old_input.length - 1 );
+            this.display( new_input );
+        }, 
+
+        ['clear']: function(){
+            /**
+             * Clears the calculator screen
+             */
+            this.display( '' );
+        }, 
+
+        ['=']: function(){
+            /**
+             * uses eval() to calculate the equation the user has created. 
+             * Uses a Try/Catch method to prevent JS from crashing when a user inputs bad syntax.
+             */
+            let problem = this.$output.text();
+            try{
+                let awnser = eval( problem );
+                this.display( awnser );
+            } catch( e ){
+                if( e instanceof SyntaxError ){
+                    setTimeout( this.display( e.message ), 1000  );
+                    this['clear']();
+                }
+            }
+        }, 
     }
-    function subtract(x, y){
-        return x - y;
-    }
-    function multiply(x, y){
-        return x * y;
-    }
-    function divide(x, y){
-        return x / y;
-    }
+    calculator.init();
 });
